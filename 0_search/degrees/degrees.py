@@ -5,14 +5,12 @@ from util import Node, StackFrontier, QueueFrontier
 
 # Maps names to a set of corresponding person_ids
 names = {}
-# names = {name: person_id}
+
 # Maps person_ids to a dictionary of: name, birth, movies (a set of movie_ids)
 people = {}
-#people = {person_id:{name: name, birth: birth, movies:(movie_ids)}}
 
 # Maps movie_ids to a dictionary of: title, year, stars (a set of person_ids)
 movies = {}
-#movies = {title:title, year:year, stars: (person_ids)}
 
 
 def load_data(directory):
@@ -87,6 +85,9 @@ def main():
 
 
 def shortest_path(source, target):
+    # names = {name: person_id}
+    #people = {person_id:{name: name, birth: birth, movies:(movie_ids)}}
+    #movies = {title:title, year:year, stars: (person_ids)}
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
