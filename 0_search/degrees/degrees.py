@@ -86,17 +86,58 @@ def main():
 
 def shortest_path(source, target):
     # names = {name: person_id}
-    #people = {person_id:{name: name, birth: birth, movies:(movie_ids)}}
-    #movies = {title:title, year:year, stars: (person_ids)}
+    # people = {person_id:{name: name, birth: birth, movies:(movie_ids)}}
+    # movies = {title:title, year:year, stars: (person_ids)}
     """
     Returns the shortest list of (movie_id, person_id) pairs
     that connect the source to the target.
 
     If no possible path, returns None.
     """
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
 
-    # TODO
-    raise NotImplementedError
+    explored = set()
+    num_explored = 0
+
+    while True:
+
+        # If no result return None
+        if frontier.empty():
+            return None
+        # Chose node from frontier
+        node = frontier.remove()
+        num_explored += 1
+
+        # If node is goal
+
+        if node.state == target:
+            
+            result = []
+
+            while node.parent is not None:
+                result.append((node.action, node.state))
+                node = node.parent
+            result.reverse()
+            return result
+        
+        # Mark explored
+
+        explored.add(node.state)
+
+        movie_set = neighbors_for_person(node.state)
+        for movie_id, person_id in movie_set:
+            if not frontier.contains_state(person_id) and person_id not in explored:
+                child = Node(state=person_id, parent=node, action=movie_id)
+                if child.state == target:
+                    result = []
+                    while child.parent is not None:
+                        result.append((child.action, child.state))
+                        child = child.parent
+                    result.reverse()
+                    return result
+                frontier.add(child)
 
 
 def person_id_for_name(name):
