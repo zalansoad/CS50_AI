@@ -75,13 +75,15 @@ def terminal(board):
         columns[0].append(row[0])
         columns[1].append(row[1])
         columns[2].append(row[2])
+
         if None in row:
             empty_cells = True
+
         if len(set(row)) == 1 and None not in set(row):
             return True
     
     for column in columns:
-        if len(set(column)) == 1 and None not in set(row):
+        if len(set(column)) == 1 and None not in set(column):
             return True
     
     if empty_cells == True:

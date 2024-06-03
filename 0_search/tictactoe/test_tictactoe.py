@@ -17,11 +17,11 @@ board4 = [[X, X, X],
           [EMPTY, O, O],
           [EMPTY, X, EMPTY]]
 board5 = [[O, X, EMPTY],
-          [O, O, O],
+          [O, EMPTY, O],
           [O, X, EMPTY]]
 
 board6 = [[O, X, EMPTY],
-          [O, O, O],
+          [O, O, X],
           [O, X, O]]          
           
 
