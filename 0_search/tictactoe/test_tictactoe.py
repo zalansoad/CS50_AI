@@ -22,7 +22,10 @@ board5 = [[O, X, EMPTY],
 
 board6 = [[O, X, EMPTY],
           [O, O, X],
-          [O, X, O]]          
+          [EMPTY, X, O]]
+board7 = [[EMPTY, EMPTY, X],
+          [EMPTY, X, EMPTY],
+          [X, EMPTY, EMPTY]]         
           
 
 
@@ -32,7 +35,11 @@ def test_player():
     assert player(board3) == "X"
 
 def test_terminal():
+    assert terminal(board1) == False
+    assert terminal(board2) == False
+    assert terminal(board3) == False
     assert terminal(board4) == True
     assert terminal(board5) == True
     assert terminal(board6) == True
-    assert terminal(board2) == False
+    assert terminal(board7) == True
+    
