@@ -22,7 +22,17 @@ def player(board):
     """
     Returns player who has the next turn on a board.
     """
-    raise NotImplementedError
+    x = 0
+    o = 0
+    empty = 0
+    for row in board:
+        x += row.count("X")
+        o += row.count("O")
+    
+    if x == o:
+        return "X"
+    else:
+        return "O"
 
 
 def actions(board):
@@ -50,7 +60,35 @@ def terminal(board):
     """
     Returns True if game is over, False otherwise.
     """
-    raise NotImplementedError
+    #checking if there are still empty cells
+    columns =[[], [], []]
+    diagonals = [[board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]]
+    #checking if the same value is present diagonally
+    for diagonal in diagonals:
+        if len(set(diagonal)) == 1 and None not in set(diagonal):
+            return True
+
+    #initialise empty cells, empty = None
+    empty_cells = False
+    for row in board:
+        #creating column list to check result
+        columns[0].append(row[0])
+        columns[1].append(row[1])
+        columns[2].append(row[2])
+        if None in row:
+            empty_cells = True
+        if len(set(row)) == 1 and None not in set(row):
+            return True
+    
+    for column in columns:
+        if len(set(column)) == 1 and None not in set(row):
+            return True
+    
+    if empty_cells == True:
+        return False
+    else:
+        return True
+    
 
 
 def utility(board):
