@@ -1,4 +1,5 @@
-from tictactoe import player, terminal, actions
+from tictactoe import player, terminal, actions, result
+import pytest
 
 X = "X"
 O = "O"
@@ -25,7 +26,22 @@ board6 = [[O, X, EMPTY],
           [EMPTY, X, O]]
 board7 = [[EMPTY, EMPTY, X],
           [EMPTY, X, EMPTY],
-          [X, EMPTY, EMPTY]]         
+          [X, EMPTY, EMPTY]]
+
+def test_result():
+    X = "X"
+    O = "O"
+    EMPTY = None
+    assert result(board1, (0, 0)) == [  [X, EMPTY, EMPTY],
+                                        [EMPTY, EMPTY, EMPTY],
+                                        [EMPTY, EMPTY, EMPTY]]
+
+    assert result(board2, (0, 0)) == [  [O, X, EMPTY],
+                                        [EMPTY, EMPTY, EMPTY],
+                                        [EMPTY, EMPTY, EMPTY]]
+    with pytest.raises(ValueError):
+        result(board2, (0, 1))
+
           
 def test_actions():
     assert actions(board3) =={(0, 0), (0, 2), (1, 0), (2, 0), (2, 2)}
