@@ -1,4 +1,4 @@
-from tictactoe import player, terminal
+from tictactoe import player, terminal, actions
 
 X = "X"
 O = "O"
@@ -27,7 +27,12 @@ board7 = [[EMPTY, EMPTY, X],
           [EMPTY, X, EMPTY],
           [X, EMPTY, EMPTY]]         
           
-
+def test_actions():
+    assert actions(board3) =={(0, 0), (0, 2), (1, 0), (2, 0), (2, 2)}
+    assert actions(board4) =={(1, 0), (2, 0), (2, 2)}
+    assert actions(board5) =={(0, 2), (1, 1), (2, 2)}
+    assert actions(board6) =={(0, 2), (2, 0)}
+    
 
 def test_player():
     assert player(board1) == "X"
