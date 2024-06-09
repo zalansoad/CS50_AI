@@ -1,4 +1,4 @@
-from tictactoe import player, terminal, actions, result, winner
+from tictactoe import player, terminal, actions, result, winner, utility
 import pytest
 
 X = "X"
@@ -30,6 +30,11 @@ board7 = [[EMPTY, EMPTY, X],
 board8 = [[X, O, X],
           [O, O, X],
           [X, X, O]]
+
+def test_utility():
+    assert utility(board4) == 1
+    assert utility(board5) == -1
+    assert utility(board8) == 0
 
 def test_winner():
     assert winner(board2) == None
