@@ -57,7 +57,9 @@ def result(board, action):
     
     new_board = copy.deepcopy(board)
     try:
-        if new_board[action[0]][action[1]] == "O" or new_board[action[0]][action[1]] == "X":
+        if action[0] < 0 or action[1] < 0:
+            raise ValueError("Invalid move!")
+        elif new_board[action[0]][action[1]] == "O" or new_board[action[0]][action[1]] == "X":
             raise ValueError("Invalid move!")
         else:
             new_board[action[0]][action[1]] = player(board)
