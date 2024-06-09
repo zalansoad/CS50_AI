@@ -1,4 +1,4 @@
-from tictactoe import player, terminal, actions, result
+from tictactoe import player, terminal, actions, result, winner
 import pytest
 
 X = "X"
@@ -27,6 +27,15 @@ board6 = [[O, X, EMPTY],
 board7 = [[EMPTY, EMPTY, X],
           [EMPTY, X, EMPTY],
           [X, EMPTY, EMPTY]]
+board8 = [[X, O, X],
+          [O, O, X],
+          [X, X, O]]
+
+def test_winner():
+    assert winner(board2) == None
+    assert winner(board5) == "O"
+    assert winner(board7) == "X"
+    assert winner(board8) == None
 
 def test_result():
     X = "X"

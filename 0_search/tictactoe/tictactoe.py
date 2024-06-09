@@ -71,7 +71,30 @@ def winner(board):
     """
     Returns the winner of the game, if there is one.
     """
-    raise NotImplementedError
+    columns =[[], [], []]
+    diagonals = [[board[0][0], board[1][1], board[2][2]], [board[0][2], board[1][1], board[2][0]]]
+    #checking if the same value is present diagonally
+    for diagonal in diagonals:
+        if len(set(diagonal)) == 1 and None not in set(diagonal):
+            return diagonal[0]
+
+    #initialise empty cells, empty = None
+    empty_cells = False
+    for row in board:
+        #creating column list to check result
+        columns[0].append(row[0])
+        columns[1].append(row[1])
+        columns[2].append(row[2])
+
+        if len(set(row)) == 1 and None not in set(row):
+            return row[0]
+    
+    for column in columns:
+        if len(set(column)) == 1 and None not in set(column):
+            return column[0]
+    
+    return None
+
 
 
 def terminal(board):
