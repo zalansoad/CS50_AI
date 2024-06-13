@@ -62,7 +62,7 @@ def result(board, action):
         elif new_board[action[0]][action[1]] == "O" or new_board[action[0]][action[1]] == "X":
             raise ValueError("Invalid move!")
         else:
-            new_board[action[0]][action[1]] = player(board)
+            new_board[action[0]][action[1]] = player(new_board)
             return new_board
     except IndexError:
         raise ValueError("Invalid move!")
@@ -155,7 +155,7 @@ def minimax(board):
     Returns the optimal action for the current player on the board.
     """
     def maxvalue(state):
-        v = -1
+        v = -math.inf
 
         if terminal(state):
             return utility(state)
@@ -166,7 +166,7 @@ def minimax(board):
 
             
     def minvalue(state):
-        v = 1
+        v = math.inf
         
         if terminal(state):
             return utility(state)
@@ -180,31 +180,30 @@ def minimax(board):
         return None
 
     current_player = player(board)
-    best = None
-    tie = None
-    worst = None
-    for action in actions(board):
-        if current_player == "X":
-            if maxvalue(result(board, action)) == 1:
-                best = action
-            elif maxvalue(result(board, action)) == 0:
-                tie = action
-            else:
-                worst = action
-
-        elif current_player == "O":
-            if minvalue(result(board, action)) == -1:
-                best = action
-            elif minvalue(result(board, action)) == 0:
-                tie = action
-            else:
-                worst = action
+    best_action = None
     
-    if best is not None:
-        return best
-    elif tie is not None:
-        return tie
-    else: 
-        return worst
+    if current_player == "X":
+        best_value = -math.inf
+        for action in actions(board):
+            value = minvalue(result(board, action))
+            if value > best_value:
+                best_value = value
+                best_action = action
+    else:
+        best_value = math.inf
+        for action in actions(board):
+            value = maxvalue(result(board, action))
+            if value < best_value:
+                best_value = value
+                best_action = action
+
+    if best_action == None:
+        coordinates_list = list(actions(board))
+        return coordinates_list[0]
+    else:
+        return best_action
+                
+    
+
 
     
