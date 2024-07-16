@@ -1,4 +1,4 @@
-from tictactoe import player, terminal, actions, result, winner, utility
+from tictactoe import player, terminal, actions, result, winner, utility, minimax
 import pytest
 
 X = "X"
@@ -30,6 +30,12 @@ board7 = [[EMPTY, EMPTY, X],
 board8 = [[X, O, X],
           [O, O, X],
           [X, X, O]]
+board9 = [[EMPTY, X, X],
+          [EMPTY, O, O],
+          [EMPTY, X, EMPTY]]
+
+def test_minimax():
+    assert minimax(board9) == (1, 0)   
 
 def test_utility():
     assert utility(board4) == 1
@@ -58,10 +64,13 @@ def test_result():
 
           
 def test_actions():
+    assert actions(board1) =={(0, 0), (0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)}
+    assert actions(board2) =={(0, 0), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)}
     assert actions(board3) =={(0, 0), (0, 2), (1, 0), (2, 0), (2, 2)}
     assert actions(board4) =={(1, 0), (2, 0), (2, 2)}
     assert actions(board5) =={(0, 2), (1, 1), (2, 2)}
     assert actions(board6) =={(0, 2), (2, 0)}
+    assert actions(board9) =={(0, 0), (1, 0), (2, 0), (2, 2)}
     
 
 def test_player():
@@ -77,4 +86,6 @@ def test_terminal():
     assert terminal(board5) == True
     assert terminal(board6) == True
     assert terminal(board7) == True
-    
+
+value = minimax(board3)
+print(value)
