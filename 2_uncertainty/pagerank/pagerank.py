@@ -57,27 +57,30 @@ def transition_model(corpus, page, damping_factor):
     linked to by `page`. With probability `1 - damping_factor`, choose
     a link at random chosen from all pages in the corpus.
     """
-    pages = []
-    for html in corpus:
-            for link in corpus[html]:
-                if link not in pages:
-                    pages.append(link)
+    if not corpus[page]:
+        odds = 1/len(corpus)
+        result_dict = {}
+
+        for key in corpus:
+            result_dict[key] = odds
+
+        return result_dict
     
+    else:
+        pages = corpus[page]
+        
+        default_odds = (1 - damping_factor) / len(corpus)
+        rand_jump = damping_factor / len(pages)
 
-    default_odds = (1 - damping_factor) / len(corpus)
-    rand_jump = damping_factor / len(pages)
+        result_dict = {}
 
-    result_dict = {}
-    keys_list = list(corpus.keys())
-    print(keys_list)
+        for key in corpus:
+            if key in pages:
+                result_dict[key] = rand_jump + default_odds
+            else:
+                result_dict[key] = default_odds
 
-    for key in keys_list:
-        if key in pages:
-            result_dict[key] = rand_jump + default_odds
-        else:
-            result_dict[key] = default_odds
-
-    return result_dict
+        return result_dict
 
 
 def sample_pagerank(corpus, damping_factor, n):
@@ -89,7 +92,31 @@ def sample_pagerank(corpus, damping_factor, n):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    raise NotImplementedError
+
+    count_dict = {}
+    current = random.choice(list(corpus.keys()))
+    count_dict[current] = 1
+
+    
+    for i in range(n):
+        prob_distr = transition_model(corpus, current, damping_factor)
+        keys = list(prob_distr.keys())
+        values = []
+        for prob in prob_distr:
+            values.append(prob_distr[prob])
+
+        current = random.choices(keys, values)[0]
+        
+        if current not in count_dict:
+            count_dict[current] = 1
+        else:
+            count_dict[current] = count_dict[current] + 1
+    
+    result_dict = count_dict
+    for key in result_dict:
+        result_dict[key] = result_dict[key] / n
+
+    return result_dict
 
 
 def iterate_pagerank(corpus, damping_factor):
