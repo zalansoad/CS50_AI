@@ -128,6 +128,42 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
+    #The function should begin by assigning each page a rank of 1 / N, where N is the total number of pages in the corpus.
+    ranked_pages = corpus
+    N = len(corpus)
+    for key in corpus:
+        ranked_pages[key] = 1 / N
+    
+    for p in corpus:
+        #how many pages link to key
+        i = []
+        for page in corpus:
+            if not corpus[page]: #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                i.append(page)
+            elif p in corpus[page]:
+                i.append(page) #key oldalra enny oldal mutat
+                
+
+
+        # Vegyük minden olyan i oldalt, amelyik linkel a p oldalra.
+        # Minden ilyen i oldalhoz számoljuk ki Pr(i)/Numlinks(i)
+        # Adjuk össze az összes ilyen i oldalra kiszámított ertekeket.
+        # égül az eredményt szorozzuk meg a d értékkel
+        
+        sum_i = 0
+        for page in i:
+            if not corpus[page]:
+                NumLinks = len(corpus) #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                sum_i += ranked_pages[page]/NumLinks
+            elif:
+                NumLinks = len(corpus[page]) # hany link van az i oldalon
+                sum_i += ranked_pages[page]/NumLinks
+
+        ranked_pages[p] = (1 - d)/N + damping_factor * sum_i 
+
+        
+
+    (1-damping_factor) / len(corpus)
     raise NotImplementedError
 
 
