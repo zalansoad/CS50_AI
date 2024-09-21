@@ -167,7 +167,7 @@ def iterate_pagerank(corpus, damping_factor):
         
         num_ok = 0
         for key in ranked_pages:
-            if ranked_pages[key] - final_rank[key] < 0.001:
+            if final_rank[key] - ranked_pages[key] < 0.001:
                 num_ok += 1
                 #flag valtoztatas
         if num_ok == len(ranked_pages):
