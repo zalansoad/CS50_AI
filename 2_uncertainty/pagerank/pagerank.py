@@ -129,43 +129,53 @@ def iterate_pagerank(corpus, damping_factor):
     PageRank values should sum to 1.
     """
     #The function should begin by assigning each page a rank of 1 / N, where N is the total number of pages in the corpus.
-    ranked_pages = corpus
     N = len(corpus)
-    for key in corpus:
-        ranked_pages[key] = 1 / N
-    
-    for p in corpus:
-        #how many pages link to key
-        i = []
-        for page in corpus:
-            if not corpus[page]: #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
-                i.append(page)
-            elif p in corpus[page]:
-                i.append(page) #key oldalra enny oldal mutat
-                
-
-
-        # Vegyük minden olyan i oldalt, amelyik linkel a p oldalra.
-        # Minden ilyen i oldalhoz számoljuk ki Pr(i)/Numlinks(i)
-        # Adjuk össze az összes ilyen i oldalra kiszámított ertekeket.
-        # égül az eredményt szorozzuk meg a d értékkel
+    ranked_pages = {key: 1 / N for key in corpus}
         
-        sum_i = 0
-        for page in i:
-            if not corpus[page]:
-                NumLinks = len(corpus) #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
-                sum_i += ranked_pages[page]/NumLinks
-            elif:
-                NumLinks = len(corpus[page]) # hany link van az i oldalon
-                sum_i += ranked_pages[page]/NumLinks
+    final_rank = {key: value for key, value in ranked_pages.items()}
+    rank_flag = True
 
-        ranked_pages[p] = (1 - d)/N + damping_factor * sum_i 
+    while rank_flag:
 
+        for p in corpus:
+            #how many pages link to key
+            i = []
+            for page in corpus:
+                if not corpus[page]: #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                    i.append(page)
+                elif p in corpus[page]:
+                    i.append(page) #key oldalra enny oldal mutat
+                    
+
+
+            # Vegyük minden olyan i oldalt, amelyik linkel a p oldalra.
+            # Minden ilyen i oldalhoz számoljuk ki Pr(i)/Numlinks(i)
+            # Adjuk össze az összes ilyen i oldalra kiszámított ertekeket.
+            # égül az eredményt szorozzuk meg a d értékkel
+            
+            sum_i = 0
+            for page in i:
+                if not corpus[page]:
+                    NumLinks = len(corpus) #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                    sum_i += ranked_pages[page]/NumLinks
+                else:
+                    NumLinks = len(corpus[page]) # hany link van az i oldalon
+                    sum_i += ranked_pages[page]/NumLinks
+
+            previous_rank = ranked_pages[p]
+            ranked_pages[p] = (1 - damping_factor)/N + damping_factor * sum_i
         
+        num_ok = 0
+        for key in ranked_pages:
+            if ranked_pages[key] - final_rank[key] < 0.001:
+                num_ok += 1
+                #flag valtoztatas
+        if num_ok == len(ranked_pages):
+            rank_flag = False
+        
+        final_rank = {key: value for key, value in ranked_pages.items()} #setting final rank to current calculated ranks
 
-    (1-damping_factor) / len(corpus)
-    raise NotImplementedError
-
+    return final_rank
 
 if __name__ == "__main__":
     main()
