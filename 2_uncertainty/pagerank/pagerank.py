@@ -97,7 +97,6 @@ def sample_pagerank(corpus, damping_factor, n):
     current = random.choice(list(corpus.keys()))
     count_dict[current] = 1
 
-    
     for i in range(n):
         prob_distr = transition_model(corpus, current, damping_factor)
         keys = list(prob_distr.keys())
@@ -128,7 +127,7 @@ def iterate_pagerank(corpus, damping_factor):
     their estimated PageRank value (a value between 0 and 1). All
     PageRank values should sum to 1.
     """
-    #The function should begin by assigning each page a rank of 1 / N, where N is the total number of pages in the corpus.
+    # The function should begin by assigning each page a rank of 1 / N, where N is the total number of pages in the corpus.
     N = len(corpus)
     ranked_pages = {key: 1 / N for key in corpus}
         
@@ -138,28 +137,30 @@ def iterate_pagerank(corpus, damping_factor):
     while rank_flag:
 
         for p in corpus:
-            #how many pages link to key
+            # how many pages link to key
             i = []
             for page in corpus:
-                if not corpus[page]: #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                # A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                if not corpus[page]: 
                     i.append(page)
                 elif p in corpus[page]:
-                    i.append(page) #key oldalra enny oldal mutat
+                    # this many pages are linked to page key
+                    i.append(page) 
                     
-
-
-            # Vegyük minden olyan i oldalt, amelyik linkel a p oldalra.
-            # Minden ilyen i oldalhoz számoljuk ki Pr(i)/Numlinks(i)
-            # Adjuk össze az összes ilyen i oldalra kiszámított ertekeket.
-            # égül az eredményt szorozzuk meg a d értékkel
+            # Take every i page that links to the p page.
+            # For each such i page, calculate Pr(i)/Numlinks(i).
+            # Sum all the calculated values for these i pages.
+            # Finally, multiply the result by the value of d.
             
             sum_i = 0
             for page in i:
                 if not corpus[page]:
-                    NumLinks = len(corpus) #A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                    # A page that has no links at all should be interpreted as having one link for every page in the corpus (including itself).
+                    NumLinks = len(corpus) 
                     sum_i += ranked_pages[page]/NumLinks
                 else:
-                    NumLinks = len(corpus[page]) # hany link van az i oldalon
+                    # num links on page i
+                    NumLinks = len(corpus[page]) 
                     sum_i += ranked_pages[page]/NumLinks
 
             previous_rank = ranked_pages[p]
@@ -169,13 +170,15 @@ def iterate_pagerank(corpus, damping_factor):
         for key in ranked_pages:
             if final_rank[key] - ranked_pages[key] < 0.001:
                 num_ok += 1
-                #flag valtoztatas
+                # flag change
         if num_ok == len(ranked_pages):
             rank_flag = False
-        
-        final_rank = {key: value for key, value in ranked_pages.items()} #setting final rank to current calculated ranks
+
+        # setting final rank to current calculated ranks
+        final_rank = {key: value for key, value in ranked_pages.items()} 
 
     return final_rank
+
 
 if __name__ == "__main__":
     main()
