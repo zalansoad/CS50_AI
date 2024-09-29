@@ -139,7 +139,10 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
-    raise NotImplementedError
+    for person in people:
+        #csekkolni, hogy benne van-e one or two genes kozott. #PROBS["gene"][1]
+        #have trait alapján megállapítani a a trait valoszínűség számát. is #PROBS["trait"][1][True]: xy
+        #ezeket összeszorozni
 
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
