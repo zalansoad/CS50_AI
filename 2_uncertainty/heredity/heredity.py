@@ -139,23 +139,38 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
+    def inher_prob(num_genes):
+        if num_genes == 2:
+            return 1 - PROBS["mutation"]
+        if num_genes == 1:
+            return 0.5
+        if num_genes == 0:
+            return PROBS["mutation"]
+                    
+
+    def prob_check(name, one_gene, two_genes):
+        if name in one_gene:
+            return 1
+        elif name in two_genes:
+            return 2
+        else:
+            return 0
+        
     probability = 1
-    for person in people:
-        #csekkolni, hogy benne van-e one or two genes kozott. #PROBS["gene"][1]
-        #have trait alapján megállapítani a a trait valoszínűség számát. is #PROBS["trait"][1][True]: xy
-        #ezeket összeszorozni
-        # ha parents akkor bonyibb
-        num_genes = prob_check(person, one_gene, two_genes)
-        trait_flag = person in have_trait
+
+    for name in people.keys():
+        num_genes = prob_check(name, one_gene, two_genes)
+        trait_flag = name in have_trait
         # no parents
-        if person["mother"] == None:
+
+        if people[name]["mother"] == None:
         
             probability *= PROBS["gene"][num_genes] * PROBS["trait"][num_genes][trait_flag]
         #has parents
         else:
 
-            mother_num = prob_check(people[person["mother"]], one_gene, two_genes) 
-            father_num = prob_check(people[person["father"]], one_gene, two_genes)
+            mother_num = prob_check(people[name]["mother"], one_gene, two_genes) 
+            father_num = prob_check(people[name]["father"], one_gene, two_genes)
 
             if num_genes == 2:
                 probability *= inher_prob(mother_num) * inher_prob(father_num) * PROBS["trait"][num_genes][trait_flag]
@@ -166,29 +181,6 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             
             elif num_genes == 0:
                 probability *= (1 - inher_prob(mother_num)) * (1 - inher_prob(father_num)) * PROBS["trait"][num_genes][trait_flag]
-
-
-    def inher_prob(num_genes):
-        if num_genes == 2:
-            return 1-PROBS["mutation"]
-        if num_genes == 1:
-            return 0.5
-        if num_genes == 0:
-            return PROBS["mutation"]
-
-
-
-
-                    
-
-    def prob_check(name, one_gene, two_genes):
-        if person in one_gene:
-            return 1
-        elif person in two_genes:
-            return 2
-        else:
-            return 0
-        
 
     return probability
 
