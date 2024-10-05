@@ -139,11 +139,41 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         * everyone in set `have_trait` has the trait, and
         * everyone not in set` have_trait` does not have the trait.
     """
+    probability = 1
     for person in people:
         #csekkolni, hogy benne van-e one or two genes kozott. #PROBS["gene"][1]
         #have trait alapján megállapítani a a trait valoszínűség számát. is #PROBS["trait"][1][True]: xy
         #ezeket összeszorozni
+        # ha parents akkor bonyibb
+        
+        # no parents
+        if person["mother"] == None:
+            num_genes = prob_check(person, one_gene, two_genes)
+            trait_flag = person in have_trait
 
+            probability *= PROBS["gene"][um_genes] * PROBS["trait"][1][trait_flag]
+
+        else:
+            num_genes = prob_check(person, one_gene, two_genes)
+            trait_flag = person in have_trait
+            
+            mother_num = prob_check(people[person["mother"]], one_gene, two_genes) 
+            father_num = prob_check(people[person["father"]], one_gene, two_genes)
+
+
+
+                    
+
+    def prob_check(name, one_gene, two_genes):
+        if person in one_gene:
+            return 1
+        elif person in two_genes:
+            return 2
+        else:
+            return 0
+        
+
+        return 1
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
     """
