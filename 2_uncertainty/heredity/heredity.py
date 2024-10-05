@@ -158,17 +158,14 @@ def joint_probability(people, one_gene, two_genes, have_trait):
             father_num = prob_check(people[person["father"]], one_gene, two_genes)
 
             if num_genes == 2:
-            probability *= inher_prob(mother_num) * inher_prob(father_num) * PROBS["trait"][num_genes][trait_flag]
+                probability *= inher_prob(mother_num) * inher_prob(father_num) * PROBS["trait"][num_genes][trait_flag]
 
-            if num_genes == 1:
+            elif num_genes == 1:
                 inher_1_prob = inher_prob(mother_num) * (1 - inher_prob(father_num)) + (1 - inher_prob(mother_num)) * inher_prob(father_num)
                 probability *= inher_1_prob * PROBS["trait"][num_genes][trait_flag]
-            if num_genes == 0:
             
-
-
-
-
+            elif num_genes == 0:
+                probability *= (1 - inher_prob(mother_num)) * (1 - inher_prob(father_num)) * PROBS["trait"][num_genes][trait_flag]
 
 
     def inher_prob(num_genes):
