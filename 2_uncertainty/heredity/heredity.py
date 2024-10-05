@@ -145,20 +145,30 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         #have trait alapján megállapítani a a trait valoszínűség számát. is #PROBS["trait"][1][True]: xy
         #ezeket összeszorozni
         # ha parents akkor bonyibb
-        
+        num_genes = prob_check(person, one_gene, two_genes)
+        trait_flag = person in have_trait
         # no parents
         if person["mother"] == None:
-            num_genes = prob_check(person, one_gene, two_genes)
-            trait_flag = person in have_trait
-
-            probability *= PROBS["gene"][um_genes] * PROBS["trait"][1][trait_flag]
-
+        
+            probability *= PROBS["gene"][num_genes] * PROBS["trait"][num_genes][trait_flag]
+        #has parents
         else:
-            num_genes = prob_check(person, one_gene, two_genes)
-            trait_flag = person in have_trait
-            
+
             mother_num = prob_check(people[person["mother"]], one_gene, two_genes) 
             father_num = prob_check(people[person["father"]], one_gene, two_genes)
+
+            probability *= PROBS["gene"][num_genes] * PROBS["trait"][1][trait_flag]
+
+            #anyatol
+                #van gene
+                #nincs gene
+            #apatol
+                #van gene
+                #nincs gene
+
+            1
+            0.5
+
 
 
 
