@@ -145,8 +145,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         if num_genes == 1:
             return 0.5
         if num_genes == 0:
-            return PROBS["mutation"]
-                    
+            return PROBS["mutation"]                
 
     def prob_check(name, one_gene, two_genes):
         if name in one_gene:
@@ -166,7 +165,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
         if people[name]["mother"] == None:
         
             probability *= PROBS["gene"][num_genes] * PROBS["trait"][num_genes][trait_flag]
-        #has parents
+        # has parents
         else:
 
             mother_num = prob_check(people[name]["mother"], one_gene, two_genes) 
@@ -183,6 +182,7 @@ def joint_probability(people, one_gene, two_genes, have_trait):
                 probability *= (1 - inher_prob(mother_num)) * (1 - inher_prob(father_num)) * PROBS["trait"][num_genes][trait_flag]
 
     return probability
+
 
 def update(probabilities, one_gene, two_genes, have_trait, p):
     """
