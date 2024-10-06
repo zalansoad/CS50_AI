@@ -211,10 +211,14 @@ def normalize(probabilities):
     """
     
     for person in probabilities.keys():
-        sum_prob = probabilities[person]["trait"][True] + probabilities[person]["trait"][False]
-        probabilities[person]["trait"][True] /= sum_prob
-        probabilities[person]["trait"][False] /= sum_prob
+        sum_prob_trait = probabilities[person]["trait"][True] + probabilities[person]["trait"][False]
+        probabilities[person]["trait"][True] /= sum_prob_trait
+        probabilities[person]["trait"][False] /= sum_prob_trait
 
+        sum_prob_gene = probabilities[person]["gene"][1] + probabilities[person]["gene"][2] + probabilities[person]["gene"][0]
+        probabilities[person]["gene"][1] /= sum_prob_gene
+        probabilities[person]["gene"][2] /= sum_prob_gene
+        probabilities[person]["gene"][0] /= sum_prob_gene
 
 if __name__ == "__main__":
     main()
