@@ -1,0 +1,5 @@
+
+SET:
+To create a copy of a set use set(), e.g.:
+new_set = ('one','two') 
+create a copy by set(new_set)
