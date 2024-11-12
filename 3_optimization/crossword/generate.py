@@ -148,7 +148,30 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        raise NotImplementedError
+        # Step 1: Initialize the queue with all arcs (X, Y) where X and Y are overlapping variables
+        # queue ← list of all pairs (X, Y) where X and Y are variables that overlap
+        if arcs is None:
+            queue = []
+            for x in self.crossword.variables:
+                for y in self.crossword.neighbors(x):
+                    queue.append((x, y))
+                    
+        
+        else:
+            queue = list(arcs)
+        queue = set(queue)
+
+        while queue:
+            x, y = queue.pop()
+            if self.revise(x, y):
+                if len(self.domains[x]) == 0:
+                    return False
+                for z in self.crossword.neighbors(x):
+                    if z != y:
+                        queue.add((x, z))     
+        return True
+
+
 
     def assignment_complete(self, assignment):
         """
