@@ -122,6 +122,7 @@ class CrosswordCreator():
         if self.crossword.overlaps[x, y]:
             i, j = self.crossword.overlaps[x, y]
             # check if the ith char of word_x is the same as the jth char of word_y
+            revised = False
             for word_x in set(self.domains[x]):
                 match_flag = False
                 for word_y in self.domains[y]:
@@ -132,7 +133,8 @@ class CrosswordCreator():
                 if not match_flag:
                     #remove word_x
                     self.domains[x].remove(word_x)
-            return True
+                    revised = True
+            return revised
         
         else: return False
 
@@ -146,8 +148,7 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        # Step 1: Initialize the queue with all arcs (X, Y) where X and Y are overlapping variables
-        # queue ← list of all pairs (X, Y) where X and Y are variables that overlap
+        #creating a new queue if arcs is None
         if arcs is None:
             queue = []
             for x in self.crossword.variables:
@@ -159,17 +160,19 @@ class CrosswordCreator():
             queue = list(arcs)
         queue = set(queue)
 
+        #iterating over the elements of the queue
         while queue:
             (x, y) = queue.pop()
+            #if arc consistency is established
             if self.revise(x, y):
+                #if the domain is empty return fals
                 if len(self.domains[x]) == 0:
                     return False
+                #else check the neighbouring variables how they are affected by the change > adding new elements to the queue
                 for z in self.crossword.neighbors(x):
                     if z != y:
                         queue.add((z, x))    
         return True
-
-
 
     def assignment_complete(self, assignment):
         """
