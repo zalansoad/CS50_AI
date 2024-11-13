@@ -109,8 +109,6 @@ class CrosswordCreator():
                     self.domains[var].remove(word)
 
 
-
-
     def revise(self, x, y):
         """
         Make variable `x` arc consistent with variable `y`.
@@ -162,13 +160,13 @@ class CrosswordCreator():
         queue = set(queue)
 
         while queue:
-            x, y = queue.pop()
+            (x, y) = queue.pop()
             if self.revise(x, y):
                 if len(self.domains[x]) == 0:
                     return False
                 for z in self.crossword.neighbors(x):
                     if z != y:
-                        queue.add((x, z))     
+                        queue.add((z, x))    
         return True
 
 
