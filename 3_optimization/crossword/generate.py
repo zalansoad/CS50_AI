@@ -202,22 +202,6 @@ class CrosswordCreator():
                     if assignment[var][i] != assignment[neighbor][j]:
                         return False
         return True
-        
-        """
-        for var in self.crossword.variables:
-            if var not in assignment or not assignment[var]:
-                return False
-            if var.length != len(assignment[var]):
-                return False
-            for neighbor in self.crossword.neighbors(var):
-                if assignment[neighbor]:
-                    if assignment[neighbor] == assignment[var]:
-                        return False
-                    i, j = self.crossword.overlaps[var, neighbor]
-                    if assignment[var][i] != assignment[neighbor][j]:
-                        return False
-        return True
-    """
 
     def order_domain_values(self, var, assignment):
         """
@@ -226,7 +210,24 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        raise NotImplementedError
+        #varnak vannak ertekei
+        #ezeken vegigmenni
+        #csekkolni, hogy mennyit eliminal a maikokbol az ertek.
+        conflicts = {}
+
+        if var not in assignment:
+            for word_var in self.domains[var]:
+                total_neighbor_elim = 0
+                for neighbor in self.crossword.neighbors(var):
+                    i, j = self.crossword.overlaps[var, neighbor]
+                    if len(word_var) == var.length:
+                        for word_neighbor in self.domains[neighbor]:
+                            if word_var[i] != word_neighbor[j]:
+                                total_neighbor_elim += 1
+                conflicts[word_var] = total_neighbor_elim
+            
+            order_domain = sorted(conflicts, key=lambda k: conflicts[k])
+            return order_domain
 
     def select_unassigned_variable(self, assignment):
         """
@@ -236,7 +237,40 @@ class CrosswordCreator():
         degree. If there is a tie, any of the tied variables are acceptable
         return values.
         """
-        raise NotImplementedError
+        unassigned_list = []
+        for var in self.crossword.variables:
+            if var not in assignment:
+                unassigned_list.append(var)
+
+        unassigned_dict = {}
+        for var in unassigned_list:
+            length = len(self.domains[var])
+            unassigned_dict[var] = length
+        
+        min_value = min(unassigned_dict.values())
+        unassigned_list = [key for key in unassigned_dict.keys() if unassigned_dict[key] == min_value]
+
+        neighbor_count = {}
+        if len(unassigned_list) > 1:
+            for var in unassigned_list:
+                neighbor_count[var] = len(self.crossword.neighbors(var))
+            min_value_neigh = min(neighbor_count.values())
+            var_min_neighbor = [key for key in neighbor_count.keys() if neighbor_count[key] == min_value_neigh]
+            return var_min_neighbor[0]
+        else: 
+            return unassigned_list[0]
+            
+                
+
+        
+
+
+
+        
+        return 
+        
+
+
 
     def backtrack(self, assignment):
         """
