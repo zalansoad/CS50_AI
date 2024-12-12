@@ -99,15 +99,14 @@ class CrosswordCreator():
         (Remove any values that are inconsistent with a variable's unary
          constraints; in this case, the length of the word.)
         """
-        #self.domains iteralas
-        #.lenght megadja a hosszast.
+        # self.domains iteralas
+        # .lenght megadja a hosszast.
         
         for var in self.domains:
-            #iterate over the copy of the initial set.
+            # iterate over the copy of the initial set.
             for word in set(self.domains[var]):
                 if len(word) != var.length:
                     self.domains[var].remove(word)
-
 
     def revise(self, x, y):
         """
@@ -131,13 +130,13 @@ class CrosswordCreator():
                         break
                 # remove word_x if does not match with anything in self.domains[y]
                 if not match_flag:
-                    #remove word_x
+                    # remove word_x
                     self.domains[x].remove(word_x)
                     revised = True
             return revised
         
-        else: return False
-
+        else: 
+            return False
 
     def ac3(self, arcs=None):
         """
@@ -148,27 +147,26 @@ class CrosswordCreator():
         Return True if arc consistency is enforced and no domains are empty;
         return False if one or more domains end up empty.
         """
-        #creating a new queue if arcs is None
+        # creating a new queue if arcs is None
         if arcs is None:
             queue = []
             for x in self.crossword.variables:
                 for y in self.crossword.neighbors(x):
-                    queue.append((x, y))
-                    
+                    queue.append((x, y))              
         
         else:
             queue = list(arcs)
         queue = set(queue)
 
-        #iterating over the elements of the queue
+        # iterating over the elements of the queue
         while queue:
             (x, y) = queue.pop()
-            #if arc consistency is established
+            # if arc consistency is established
             if self.revise(x, y):
-                #if the domain is empty return fals
+                # if the domain is empty return fals
                 if len(self.domains[x]) == 0:
                     return False
-                #else check the neighbouring variables how they are affected by the change > adding new elements to the queue
+                # else check the neighbouring variables how they are affected by the change > adding new elements to the queue
                 for z in self.crossword.neighbors(x):
                     if z != y:
                         queue.add((z, x))    
@@ -182,8 +180,7 @@ class CrosswordCreator():
         for var in self.crossword.variables:
             if var not in assignment or not assignment[var]:
                 return False
-        return True
-        
+        return True      
 
     def consistent(self, assignment):
         """
@@ -210,9 +207,6 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        #varnak vannak ertekei
-        #ezeken vegigmenni
-        #csekkolni, hogy mennyit eliminal a maikokbol az ertek.
         conflicts = {}
 
         if var not in assignment:
@@ -259,18 +253,6 @@ class CrosswordCreator():
             return var_min_neighbor[0]
         else: 
             return unassigned_list[0]
-            
-                
-
-        
-
-
-
-        
-        return 
-        
-
-
 
     def backtrack(self, assignment):
         """
@@ -281,7 +263,23 @@ class CrosswordCreator():
 
         If no assignment is possible, return None.
         """
-        raise NotImplementedError
+        if self.assignment_complete(assignment):
+            return assignment
+        
+        var = self.select_unassigned_variable(assignment)
+        value_list = self.order_domain_values(var, assignment)
+
+        for value in value_list:
+            assignment[var] = value
+
+            if self.consistent(assignment):
+                result = self.backtrack(assignment)
+                if result is not None:
+                    return result
+            
+            del assignment[var]
+        
+        return None
 
 
 def main():
