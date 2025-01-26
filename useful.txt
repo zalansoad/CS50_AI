@@ -3,3 +3,6 @@ SET:
 To create a copy of a set use set(), e.g.:
 new_set = ('one','two') 
 create a copy by set(new_set)
+
+Tuple
+if self.crossword.overlaps[x, y] returns a tuple, get value by i, j = self.crossword.overlaps[x, y]
