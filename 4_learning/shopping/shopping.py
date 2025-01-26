@@ -59,7 +59,31 @@ def load_data(filename):
     labels should be the corresponding list of labels, where each label
     is 1 if Revenue is true, and 0 otherwise.
     """
-    raise NotImplementedError
+    evidence = []
+    with open('filename', mode='r') as file:
+        shoppingcsv = csv.reader(file)
+        #skipping the first row
+
+        header = next(shoppingcsv)
+        #neglecting the last column
+        header_without_last_column = header[:-1]
+        #creating a dictionary of the column names and their indexes
+        #this will be used to correct the data types later
+        header_dict = {header_without_last_column.index(item): item  for item in header_without_last_column}
+        
+        
+        for line in shoppingcsv:
+            #removing the last column
+            line_without_last_column = line[:-1]
+            #iterating over the line to define the data types
+            for element in line_without_last_column:
+
+            
+
+
+
+
+                evidence.append(element)
 
 
 def train_model(evidence, labels):
