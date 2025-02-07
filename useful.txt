@@ -6,3 +6,5 @@ create a copy by set(new_set)
 
 Tuple
 if self.crossword.overlaps[x, y] returns a tuple, get value by i, j = self.crossword.overlaps[x, y]
+
+.index returns the first occurance only

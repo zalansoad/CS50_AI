@@ -64,7 +64,7 @@ def load_data(filename):
     evidence = []
     labels = []
     
-    with open('filename', mode='r') as file:
+    with open(filename, mode='r') as file:
         shoppingcsv = csv.reader(file)
         #skipping the first row
 
@@ -72,43 +72,40 @@ def load_data(filename):
         
         #creating a dictionary of the column names and their indexes
         #this will be used to correct the data types later
-        header_dict = {header.index(item): item  for item in header}
-        
+        header_dict = {header.index(item): item for item in header}
+    
         Months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-        
-        
+
         for line in shoppingcsv:
             rows = []
-            #iterating over the line to define the data types
-            for element in line:
-                #getting element index to identify column
-                element_index = line.index(element)
-
+            #Enumerating the elements in the current row
+            for element_index, element in enumerate(line): 
                 # Month, an index from 0 (January) to 11 (December)
-                if header_dict[element_index] = 'Month':
+                if header_dict[element_index] == 'Month':
                     #getting month index by the index of the month name in Months list
                     month_index = Months.index(element)
                     rows.append(int(month_index))
 
                 # VisitorType, an integer 0 (not returning) or 1 (returning)
-                if header_dict[element_index] = 'VisitorType':
-                    if element = 'New_Visitor':
+                if header_dict[element_index] == 'VisitorType':
+                    if element == 'New_Visitor':
                         rows.append(0)
                     else:
                         rows.append(1)
 
                 # Weekend, an integer 0 (if false) or 1 (if true)
-                if header_dict[element_index] = 'Weekend':
-                    if element = 'FALSE':
+                if header_dict[element_index] == 'Weekend':
+                    if element == 'FALSE':
                         rows.append(0)
                     else:
                         rows.append(1)
                 # 1 if Revenue is true, and 0 otherwise.
-                if header_dict[element_index] = 'Revenue'
-                    if element = 'FALSE':
-                            labels.append(0)
-                        else:
-                            labels.append(1)
+                if header_dict[element_index] == 'Revenue':
+                    if element == 'FALSE':
+                        labels.append(0)
+                    else:
+                        labels.append(1)
+                    
 
                 if header_dict[element_index] in Integers:
                     rows.append(int(element))
@@ -116,8 +113,9 @@ def load_data(filename):
                 if header_dict[element_index] in Floats:
                     rows.append(float(element))
 
-            evidence.append(row)
-
+            evidence.append(rows)
+    data = (evidence, labels)
+    return data
 
 def train_model(evidence, labels):
     """
