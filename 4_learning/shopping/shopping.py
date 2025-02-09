@@ -66,23 +66,23 @@ def load_data(filename):
     
     with open(filename, mode='r') as file:
         shoppingcsv = csv.reader(file)
-        #skipping the first row
+        # skipping the first row
 
         header = next(shoppingcsv)
         
-        #creating a dictionary of the column names and their indexes
-        #this will be used to correct the data types later
+        # creating a dictionary of the column names and their indexes
+        # this will be used to correct the data types later
         header_dict = {header.index(item): item for item in header}
     
         Months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
         for line in shoppingcsv:
             rows = []
-            #Enumerating the elements in the current row
+            # Enumerating the elements in the current row
             for element_index, element in enumerate(line): 
                 # Month, an index from 0 (January) to 11 (December)
                 if header_dict[element_index] == 'Month':
-                    #getting month index by the index of the month name in Months list
+                    # getting month index by the index of the month name in Months list
                     month_index = Months.index(element)
                     rows.append(int(month_index))
 
@@ -99,13 +99,13 @@ def load_data(filename):
                         rows.append(0)
                     else:
                         rows.append(1)
+
                 # 1 if Revenue is true, and 0 otherwise.
                 if header_dict[element_index] == 'Revenue':
                     if element == 'FALSE':
                         labels.append(0)
                     else:
                         labels.append(1)
-                    
 
                 if header_dict[element_index] in Integers:
                     rows.append(int(element))
@@ -116,6 +116,7 @@ def load_data(filename):
             evidence.append(rows)
     data = (evidence, labels)
     return data
+
 
 def train_model(evidence, labels):
     """
@@ -143,7 +144,24 @@ def evaluate(labels, predictions):
     representing the "true negative rate": the proportion of
     actual negative labels that were accurately identified.
     """
-    raise NotImplementedError
+    # total 
+    data_len = len(labels)
+    # total positive
+    positive = labels.count(1)
+    # total negative
+    negative = labels.count(0)
+
+    i = 0
+    true_count = 0
+    false_count = 0
+    for i in range(data_len):
+        if labels[i] == predictions[i]:
+            if labels[i] == 1:
+                true_count += 1   
+            else:
+                false_count += 1
+
+    return (true_count/positive, false_count/negative)
 
 
 if __name__ == "__main__":
