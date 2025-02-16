@@ -101,15 +101,14 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        #self.q[(0, 0, 0, 2), (3, 2)] = -1
+        
         mydict_key = (tuple(state), action)
-
+        # checking if the key is present in self.q
         if mydict_key in self.q:
             return self.q[mydict_key]
         else:
             return 0
         
-
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
         Update the Q-value for the state `state` and the action `action`
@@ -126,6 +125,7 @@ class NimAI():
         is the sum of the current reward and estimated future rewards.
         """
         new_q = reward + future_rewards
+        # updating self.q using the formula
         self.q[(tuple(state), action)] = old_q + self.alpha * (new_q - old_q)
 
     def best_future_reward(self, state):
@@ -138,7 +138,19 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        
+        # getting the list of actions
+        actions = Nim.available_actions(state)
+        # initialising the best action variable
+        best_action = 0
+        for action in actions:
+            key = (tuple(state), action)
+            # if the action is already in self.q updating best action if the action result is bigger than best_action
+            if key in self.q:
+                if best_action < self.q[(tuple(state), action)]:
+                    best_action = self.q[(tuple(state), action)]
+
+        return best_action
 
     def choose_action(self, state, epsilon=True):
         """
@@ -155,9 +167,26 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
 
+        actions_set = Nim.available_actions(state)
+        actions = list(actions_set)
+        best_reward = self.best_future_reward(state)
+        best_action = ()
+        # checking the best action based on the best reward in self.q
+        for action in actions:
+            key = (tuple(state), action)
+            if key in self.q:
+                if self.q[(tuple(state), action)] == best_reward:
+                    best_action = action
+        # creating a list of weight. 1 - epsilon if best action, otherwise the 0.1 probablility is devided among the rest of the actions
+        weight = [1 - self.epsilon if action == best_action else self.epsilon/(len(actions) - 1) for action in actions]
+        
+        if not epsilon:
+            return best_action
+        else:
+            return random.choices(actions, weight)[0]
 
+        
 def train(n):
     """
     Train an AI by playing `n` games against itself.
