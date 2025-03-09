@@ -2,4 +2,4 @@ Initially I only used one convolutional and pooling layer. The result was not ac
 I added another layer of convolutional and pooling. This improved the program and the result was more than 94%.
 After this I added the 3rd convolutional and pooling layers. This provided a result of 85% of accuracy, so I removed the 3rd layer.
 I increased the Dense to 256, the result was 93%, so I set it back to 128.
-The dropout was reduced to 0.3 and the result was 95.72% Since this is better than the example task I consider this a great result.
+The dropout was reduced to 0.3 and the result was 95.72%. Since this is better than the example task, I consider this a great result.
