@@ -58,7 +58,24 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    raise NotImplementedError
+
+    images = []
+    labels = []
+    # os.path.join(folder, file)
+    #iterating over the files in the data_dir
+    for category in os.listdir(data_dir):
+        #creating paths for the files
+        category_path = os.path.join(data_dir, category)
+
+        #iterating over the imgs in the path
+        for image in os.listdir(category_path):
+            image_path = os.path.join(category_path, image)
+            cvimage = cv2.imread(image_path)
+            resized_img = cv2.resize(cvimage, (IMG_WIDTH, IMG_HEIGHT))
+            images.append(resized_img)
+            labels.append(category)
+    return (images, labels)
+
 
 
 def get_model():
